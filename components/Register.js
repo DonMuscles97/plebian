@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native';
 const Register = ({ navigation }) => {
     const [email, setEmail] = useState('don')
     const [password, setPassword] = useState('pass')
+    const [isPending, setIsPending] = useState(false)
 
     let user = {
        email: email,
@@ -13,7 +14,23 @@ const Register = ({ navigation }) => {
     }
 
     const stateCheck = (user) => {
-        console.log(user);
+
+      setIsPending(true)
+      fetch('http://192.168.1.168:8000/api/register', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      }).then((val) => {
+        setIsPending(false)
+        // console.log(val);
+        alert('user created')
+      }).catch(() => {
+        setIsPending(false)
+        alert("Can't Connect to Server")
+      })
     }
 
 
@@ -25,7 +42,8 @@ const Register = ({ navigation }) => {
                 defaultValue={email}
                 onChangeText={(val) => setEmail(val)}
             />
-        <Button title="Register" onPress={() => stateCheck(user)} />
+        { !isPending && <Button title="Register" onPress={() => stateCheck(user)} />}
+        { isPending && <Button disabled title="Registering" onPress={() => stateCheck(user)} />}
         <Button style={styles.login} color="#841584" title="Go to Login" onPress={() => navigation.navigate('Login')} />
         </View>
     )
