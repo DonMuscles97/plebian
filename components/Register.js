@@ -4,47 +4,88 @@ import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native';
 
 
 const Register = ({ navigation }) => {
-    const [email, setEmail] = useState('don')
-    const [password, setPassword] = useState('pass')
-    const [isPending, setIsPending] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirm_password, setConfirmPassword] = useState('')
+    const [username, setUserName] = useState('')
 
     let user = {
-       email: email,
-       password: password 
+      
+      username: username,
+      email: email,
+      password: password,
+      confirm_password: confirm_password
     }
 
-    const stateCheck = (user) => {
+    const passwordCheck = (user) => {
+      if (user.password == user.confirm_password)
+      {
+        RegisterUser(user)
+      }
+      else
+      {
+        alert('Password and Confirm Password do not match')
+      }
+    }
 
-      setIsPending(true)
-      fetch('http://192.168.1.168:8000/api/register', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-      }).then((val) => {
-        setIsPending(false)
-        // console.log(val);
-        alert('user created')
-      }).catch(() => {
-        setIsPending(false)
-        alert("Can't Connect to Server")
-      })
+    const RegisterUser = (user) => {
+
+      
+      (async () => {
+        const rawResponse = await fetch('http://192.168.1.75:8000/api/register', {
+          
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({user})
+        });
+        const content = await rawResponse.json();
+      
+        // console.log(content);
+        alert('Account Created')
+        navigation.navigate('Login', {content})
+      })();
+      
     }
 
 
     return (
         <View style={styles.container}>
-            <Image source={logo} style={styles.logo}/>
             <TextInput
                 style={styles.input} 
-                defaultValue={email}
+                placeholder="Username"
+                placeholderTextColor='#ffffff'
+                onChangeText={(val) => setUserName(val)}
+
+            />
+
+            <TextInput
+                style={styles.input} 
+                placeholder="Email"
+                placeholderTextColor='#ffffff'
                 onChangeText={(val) => setEmail(val)}
             />
-        { !isPending && <Button title="Register" onPress={() => stateCheck(user)} />}
-        { isPending && <Button disabled title="Registering" onPress={() => stateCheck(user)} />}
-        <Button style={styles.login} color="#841584" title="Go to Login" onPress={() => navigation.navigate('Login')} />
+
+            <TextInput
+                style={styles.input} 
+                placeholder="Password"
+                placeholderTextColor='#ffffff'
+                onChangeText={(val) => setPassword(val)}
+            />
+
+            <TextInput
+                style={styles.input} 
+                placeholder="Confirm Password"
+                placeholderTextColor='#ffffff'
+                onChangeText={(val) => setConfirmPassword(val)}
+            />
+         <Button title="Register" 
+          onPress={() => passwordCheck(user)}
+          // onPress={() => }
+          />
+        {/* <Button style={styles.login} color="#841584" title="Go to Login"  /> */}
         </View>
     )
 }
@@ -62,27 +103,28 @@ const styles = StyleSheet.create({
 
     container: {
       flex: 1,
-    //   backgroundColor: '#f0ead6',
+      backgroundColor: '#464646',
       alignItems: 'center',
-      paddingTop: 100,
+      paddingTop: 20,
     //   justifyContent: 'center',
     },
   
     logo: {
       width: 300,
-      height: 150,
+      height: 160,
       bottom: 0 
     },
 
     input: {
       height: 40,
+      backgroundColor: '#545454',
       borderColor: 'black',
       borderWidth: 1,
-      marginTop: 100,
+      marginTop: 50,
       padding: 10,
       borderRadius: 10,
       width: 300,
-      color: 'black',
+      color: 'white',
       shadowOffset: {
         width: 10,
         height: 10
