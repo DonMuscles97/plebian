@@ -18,21 +18,15 @@ const Register = ({ navigation }) => {
     }
 
     const passwordCheck = (user) => {
-      if (user.password == user.confirm_password)
-      {
         RegisterUser(user)
-      }
-      else
-      {
-        alert('Password and Confirm Password do not match')
-      }
+      
     }
 
     const RegisterUser = (user) => {
 
       
       (async () => {
-        const rawResponse = await fetch('http://192.168.1.75:8000/api/register', {
+        const rawResponse = await fetch('http://192.168.1.168:8000/api/register', {
           
           method: 'POST',
           headers: {
@@ -42,10 +36,20 @@ const Register = ({ navigation }) => {
           body: JSON.stringify({user})
         });
         const content = await rawResponse.json();
-      
-        // console.log(content);
-        alert('Account Created')
-        navigation.navigate('Login', {content})
+        
+        if (content['error'])
+        {
+          alert(content['error'])
+        }
+        else
+        {
+          console.log(content)
+          alert('Account Created')
+          navigation.navigate('Login', {content})
+        }
+        console.log();
+        // alert(content.password)
+        
       })();
       
     }

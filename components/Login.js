@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import logo from '../assets/logo.png';
-import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, Button, Linking } from 'react-native';
 
 
 const Login = ({ navigation }) => {
@@ -58,9 +58,10 @@ const Login = ({ navigation }) => {
           onPress={() => LoginUser(user)}
           />
 
-        <Button title="Click here to register" 
-        onPress={() => navigation.navigate('Register')}
-        />
+        <Text style={{color: 'white'}}
+        onPress={() => navigation.navigate('Register')}>
+        Click here to register
+        </Text>
         {/* <Button style={styles.login} color="#841584" title="Go to Login"  /> */}
         </View>
     )
