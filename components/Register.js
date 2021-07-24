@@ -6,7 +6,7 @@ import { StyleSheet, Text, View, Image, TextInput, Button } from 'react-native';
 const Register = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [confirm_password, setConfirmPassword] = useState('')
+    const [password_confirmation, setConfirmPassword] = useState('')
     const [username, setUserName] = useState('')
 
     let user = {
@@ -14,7 +14,7 @@ const Register = ({ navigation }) => {
       username: username,
       email: email,
       password: password,
-      confirm_password: confirm_password
+      password_confirmation: password_confirmation
     }
 
     const passwordCheck = (user) => {
