@@ -26,7 +26,7 @@ const Register = ({ navigation }) => {
 
       
       (async () => {
-        const rawResponse = await fetch('http://192.168.1.168:8000/api/register', {
+        const rawResponse = await fetch('http://192.168.1.185:8000/api/register', {
           
           method: 'POST',
           headers: {

@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native'
 
 const Home = ({navigation, route}) => {
     const user = route.params;
-    console.log(user.content.username)
+    console.log()
     return (
         <View>
-            <Text> You have successfully Registered an Account {JSON.stringify(user.content.username)}</Text>
+            <Text> The home screen</Text>
         </View>
     )
 }

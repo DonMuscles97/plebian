@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
 import logo from '../assets/logo.png';
 import { StyleSheet, Text, View, Image, TextInput, Button, Linking } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation, setStatus,  }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    
 
     let user = {
       
@@ -18,7 +21,7 @@ const Login = ({ navigation }) => {
 
       
       (async () => {
-        const rawResponse = await fetch('http://192.168.1.75:8000/api/login', {
+        const rawResponse = await fetch('http://192.168.1.168:8000/api/login', {
           
           method: 'POST',
           headers: {
@@ -29,7 +32,21 @@ const Login = ({ navigation }) => {
         });
         const content = await rawResponse.json();
       
-        console.log(content);
+        console.log(content)
+        if (content.error)
+        {
+          alert(content.error);
+        }
+        else
+        {
+          
+          SecureStore.setItemAsync('login_info', JSON.stringify(content))
+
+          let storage = await SecureStore.getItemAsync('login_info')
+          
+          setStatus(storage)
+          
+        }
 
       })();
       
