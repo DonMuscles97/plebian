@@ -21,21 +21,27 @@ function App() {
   const [storage, setStorage] = useState('');
 
   
-  const checkStorage = async () => {
-    let local =  await SecureStore.getItemAsync('login_info')
-    // console.log(local)
-     setStorage(local)
+  const checkStorage = async (key) => {
+    let result = await SecureStore.getItemAsync(key);
+    if (result)
+    {
+      if (status == false)
+      {
+        setStatus(JSON.parse(result))
+      }
+    }
+   
     
     
   }
 
-    checkStorage()
+    checkStorage('login_info')
   
-console.log(storage)
+// console.log(status)
   return (
     
     
-    status == false && storage == null ? (
+    status == false  ? (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" >
           <Stack.Screen name="Register" component={Register} />
@@ -44,8 +50,8 @@ console.log(storage)
       </NavigationContainer>
     ) : (
       <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" >
-        <Stack.Screen name="Home" component={Home} />   
+      <Stack.Navigator initialRouteName="Home" >
+      <Stack.Screen name="Home">{props => <Home {...props} user={status} />}</Stack.Screen>          
         </Stack.Navigator>
         </NavigationContainer>
     )

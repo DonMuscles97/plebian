@@ -43,8 +43,9 @@ const Login = ({ navigation, setStatus,  }) => {
           SecureStore.setItemAsync('login_info', JSON.stringify(content))
 
           let storage = await SecureStore.getItemAsync('login_info')
+          console.log(storage)
           
-          setStatus(storage)
+          setStatus(JSON.parse(storage))
           
         }
 
